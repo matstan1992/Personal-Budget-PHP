@@ -1,0 +1,365 @@
+body
+{
+	/* Background pattern from Toptal Subtle Patterns */
+	background-image: url("img/tlo.png");
+	font-family: 'Lato', sans-serif;
+	margin: 0 !important;
+	padding: 0;
+	line-height: 1.3;
+}
+
+header
+{
+	margin-top: 25px;
+	background-color: lightskyblue;
+	width: 100%;
+	letter-spacing: 2px;
+}
+
+#text
+{
+	font-size: 17px;
+}
+/* Rejestracja, Logowanie*/
+
+.motto
+{
+	text-align: right;
+	padding-bottom: 5px;
+	font-size: 20px;
+	font-weight: 700;
+}
+
+.content
+{
+	-webkit-box-shadow: 3px 3px 30px 5px rgba(204,204,204,0.9);
+	-moz-box-shadow: 3px 3px 30px 5px rgba(204,204,204,0.9);
+	box-shadow: 3px 3px 30px 5px rgba(204,204,204,0.9);
+}
+
+.selected, .noselected
+{
+	display: inline-block;
+	border: 2px solid #76BDEA;
+	border-radius: 10px;
+	text-align: center;
+	width: 160px;
+	padding: 10px;
+	margin-bottom: 20px;
+}
+
+.selected
+{
+	background-color: #CAF0FF;
+	color: #0a2b42;
+}
+
+.noselected
+{
+	color: #0a2b42;
+}
+
+input[type=text],
+input[type=email],
+input[type=password]
+{
+	background-color: #efefef;
+	color: #666;
+	border: 2px solid #ddd;
+	border-radius: 5px;
+	box-sizing: border-box;
+}
+
+input[type=text]:focus,
+input[type=email]:focus,
+input[type=password]:focus
+{
+	-webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+	-moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+	box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+	border: 2px solid #76BDEA;
+	background-color: #CAF0FF;
+	color: #0a2b42;
+}
+
+button[type=submit]
+{
+	background-color: #87CEFA;
+	font-size: 20px;
+	color: white;
+	padding: 15px 10px;
+	margin-top: 30px;
+	border: none;
+	border-radius: 5px;
+	cursor: pointer;
+	letter-spacing: 2px;
+	outline: none;
+}
+
+button[type=submit]:focus,
+#zatwierdz:focus,
+#anuluj:focus
+{
+	-webkit-box-shadow: 0px 0px 15px 5px rgba(204,204,204,0.9);
+	-moz-box-shadow: 0px 0px 15px 5px rgba(204,204,204,0.9);
+	box-shadow: 0px 0px 15px 5px rgba(204,204,204,0.9);
+}
+
+button[type=submit]:hover,
+#zatwierdz:hover,
+#anuluj:hover
+{
+	background-color: #76BDEA;
+	color: #fff;
+}
+
+input::-webkit-input-placeholder
+{
+    color: #999;
+}
+input:focus::-webkit-input-placeholder
+{
+    color: #0a2b42;
+}
+/* Firefox < 19 */
+input:-moz-placeholder
+{
+    color: #999;
+}
+input:focus:-moz-placeholder
+{
+    color: #0a2b42;
+}
+/* Firefox > 19 */
+input::-moz-placeholder
+{
+    color: #999;
+}
+input:focus::-moz-placeholder
+{
+    color: #0a2b42;
+}
+/* Internet Explorer 10 */
+input:-ms-input-placeholder
+{
+    color: #999;
+}
+input:focus:-ms-input-placeholder
+{
+    color: #0a2b42;
+}
+
+footer
+{
+	background-color: #1c74b2;
+	font-size: 20px;
+}
+
+/* strona główna*/
+.navbar
+{
+	background-color: #1c74b2;
+	margin-top: 25px;
+}
+
+.navbar-nav .navbar-item
+{
+	border-right: 1px dashed #0a2b42;
+}
+/*
+.menu
+{
+	list-style-type: none;
+	margin: 0;
+	padding: 10px;
+	font-size: 18px;
+	min-height: 38px;
+	line-height: 200%;
+}
+
+.menu > li
+{
+	display: inline-block;
+	padding-left: 20px;
+	padding-right: 20px;
+	border-right: 1px dashed #0a2b42;
+}
+
+.menu >li:hover 
+{
+	background-color: #fff;
+}
+
+.menu > li:hover a
+{
+	color: #0a2b42;
+}
+
+.menu > li:first-child
+{
+	border-left: 1px dashed #0a2b42;
+}
+
+.menu a
+{
+	color: #fff;
+	text-decoration: none;
+}
+*/
+/*
+.description
+{
+	margin-top: 30px;
+	margin-left: auto;
+	margin-right: auto;
+	width: 1000px;
+	padding:0;
+}
+
+.description h3
+{
+	margin-bottom: 30px;
+}
+
+#welcome, #user
+{
+	display: inline-block;
+	color: #0a2b42;
+	margin-right: 5px;
+}
+
+#maindescription
+{
+	color: #0a2b42;
+}
+*/
+.imagemenu
+{
+	padding: 5px;
+	width: 450px;
+	height: 450px;
+	border: 2px solid #0a2b42;
+	border-radius: 10px;
+}
+
+/*Dodaj wydatek*/
+.row
+{
+	font-size: 18px;
+	margin-bottom: 15px;
+}
+
+.column
+{
+	display: inline-block;
+	padding: 10px;
+	width: 250px;
+}
+
+textarea,
+input[type=number], 
+input[type=date]
+{
+	width: 300px;
+	background-color: #fff;
+	color: #666;
+	border: 2px solid #ddd;
+	border-radius: 5px;
+	font-size: 18px;
+	padding: 5px;
+	outline: none;
+}
+
+textarea:focus,
+input[type=number]:focus,
+input[type=date]:focus
+{
+	-webkit-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+	-moz-box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+	box-shadow: 0px 0px 10px 2px rgba(204,204,204,0.9);
+	border: 2px solid #76BDEA;
+	background-color: #CAF0FF;
+	color: #0a2b42;
+}
+
+textarea
+{
+	resize: none;
+}
+
+#anuluj,
+#anulujModal
+{
+	background-color: #cc0000;
+}
+
+#anuluj:hover,
+#anulujModal:hover
+{
+	background-color: #bb0000;
+	color: #fff;
+}
+
+#zatwierdz
+{
+	background-color: #87CEFA;
+}
+
+#anulujModal,
+#zatwierdz
+{
+	color: white;
+	border: none;
+	border-radius: 5px;
+	letter-spacing: 2px;
+	outline: none;
+	margin: 5px;
+	padding: 8px;
+}
+/*Przeglądaj bilans - Dropdown */
+.dropbtn 
+{
+	background-color: #87CEFA;
+	color: white;
+	font-size: 16px;
+	cursor: pointer;
+	height: 40px;
+	border: 2px solid #fff;
+	border-radius: 5px;
+	width: 160px;
+}
+
+.dropdown-content 
+{
+	display: none;
+	position: absolute;
+	background-color: #87CEFA;
+	width: 160px;
+	box-shadow: 0px 8px 16px 0px rgba(0,0,0,0.2);
+	z-index: 1;
+}
+
+.dropdown-content a 
+{
+	color: white;
+	text-decoration: none;
+	display: block;
+}
+
+.dropdown-content a:hover 
+{
+	background-color: #76BDEA;
+	color: #fff;
+}
+
+.dropdown:hover .dropbtn 
+{
+	background-color: #76BDEA;
+}
+
+/* przeglądaj bilans - tabele */
+td, th 
+{
+    border: 1px solid #000;
+    padding: 8px;
+}
