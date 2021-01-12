@@ -64,7 +64,7 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link" href="index.php"><i class="icon-logout"> Wyloguj (<?= $_SESSION['username']; ?>) </i></a>
+						<a class="nav-link" href="logout.php"><i class="icon-logout"> Wyloguj (<?= $_SESSION['username']; ?>) </i></a>
 					</li>
 					
 				</ul>
