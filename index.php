@@ -1,3 +1,14 @@
+<?php
+
+	session_start();
+	
+	if ((isset($_SESSION['logged'])) && ($_SESSION['logged'] == true)) {
+		header('Location: menu.php');
+		exit();
+	}
+	
+?>
+
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head>
@@ -46,14 +57,14 @@
 								<div class="selected"><h3 class="h5 font-weight-bold">Logowanie</h3>(Mam konto)</div>	
 						</div>
 						
-						<form class="mx-auto mb-4">
+						<form class="mx-auto mb-4" action="login.php" method="post">
 						
 							<div class="row m-0">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-mail"></i></span></div>
 										<label class="sr-only">E-mail</label>
-										<input class="form-control col-9" type="text" placeholder="Podaj e-mail" aria-label="E-mail" required>
+										<input class="form-control col-9" type="email" placeholder="Podaj e-mail" aria-label="E-mail" required name="email">
 								</div>
 							</div>
 							
@@ -62,14 +73,16 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-lock"></i></span></div>
 										<label class="sr-only">Hasło</label>
-										<input class="form-control col-9" type="text" placeholder="Podaj hasło" aria-label="Hasło" required>
+										<input class="form-control col-9" type="password" placeholder="Podaj hasło" aria-label="Hasło" required name="password">
 								</div>
 							</div>
 							
 							<div class="row">
 								<button type="submit" class="col-12">Zaloguj</button>
 							</div>
-							
+							<?php
+								if (isset($_SESSION['error'])) 	echo $_SESSION['error'];
+							?>
 						</form>
 						
 					</section>

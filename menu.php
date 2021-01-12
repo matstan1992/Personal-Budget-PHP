@@ -1,3 +1,9 @@
+<?php
+
+	session_start();
+	
+?>
+
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head>
@@ -58,7 +64,7 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link" href="index.php"><i class="icon-logout"> Wyloguj (Użytkownik) </i></a>
+						<a class="nav-link" href="index.php"><i class="icon-logout"> Wyloguj (<?= $_SESSION['username']; ?>) </i></a>
 					</li>
 					
 				</ul>
@@ -70,7 +76,7 @@
 		<main>
 		
 			<div class="container mt-3 text-center">
-				<h2 class="mt-5 mb-3">Witaj, co dziś robimy?</h2>
+				<h2 class="mt-5 mb-3"><?= "Witaj ".$_SESSION['username'].", co dziś robimy?"; ?></h2>
 				<img class="imagemenu" src="img/imgmenu.jpg" alt="">
 				<h3 class="mt-3">Zaczynajmy!</h3>
 			</div>
