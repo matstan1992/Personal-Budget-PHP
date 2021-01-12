@@ -17,9 +17,12 @@
 		$email = $_POST['email'];
 		$password = $_POST['password'];
 		
-		$queryRetrieveUserFromDatabase = "SELECT * FROM users WHERE email = '$email' AND password = '$password'";
+		$email = htmlentities($email, ENT_QUOTES, "UTF-8");
+		$password = htmlentities($password, ENT_QUOTES, "UTF-8");
 		
-		if ($resultOfQuery = @$connection->query($queryRetrieveUserFromDatabase)) {
+		if ($resultOfQuery = @$connection->query(sprintf("SELECT * FROM users WHERE email = '%s' AND password = '%s'", 
+		mysqli_real_escape_string($connection, $email),
+		mysqli_real_escape_string($connection, $password)))) {
 			
 			$howManyUsers = $resultOfQuery->num_rows;
 			if ($howManyUsers > 0) {
