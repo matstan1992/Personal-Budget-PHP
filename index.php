@@ -33,7 +33,7 @@
 <body>
 	
 		<header>
-			<div class="container text-white text-center text-uppercase">
+			<div class="container mb-2 text-white text-center text-uppercase">
 				<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
 				<div class="motto">... żyj po swojemu <i class="icon-smile"></i></div>
 			</div>

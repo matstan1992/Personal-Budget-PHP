@@ -26,6 +26,29 @@
 			$_SESSION['e_username'] = "Imię musi składać się tylko ze znaków polskiego alfabetu!";
 		}
 		
+		//email
+		$email = $_POST ['email'];
+		$emailB = filter_var($email, FILTER_SANITIZE_EMAIL);
+		
+		if ((filter_var($emailB, FILTER_VALIDATE_EMAIL) == false) || ($emailB != $email)) {
+			$allGood = false;
+			$_SESSION['e_email'] = "Podaj poprawny adres e-mail!";
+		}
+		
+		//password
+		$password1 = $_POST['password1'];
+		$password2 = $_POST['password2'];
+		
+		if ((strlen($password1) < 8) || (strlen($password1) > 20)) {
+			$allGood = false;
+			$_SESSION['e_password'] = "Hasło musi posiadać od 8 do 20 znaków!";
+		}
+		
+		if ($password1 != $password2) {
+			$allGood = false;
+			$_SESSION['e_password'] = "Podane hasła nie są identyczne!";
+		}
+		
 		if ($allGood == true) {
 			
 			//Adding a user to the database
@@ -62,7 +85,7 @@
 <body>
 	
 		<header>
-			<div class="container text-white text-center text-uppercase">
+			<div class="container mb-2 text-white text-center text-uppercase">
 				<div class="pt-4 h1 font-weight-bold">Osobisty Menadżer Budżetu</div>
 				<div class="motto">... żyj po swojemu <i class="icon-smile"></i></div>
 			</div>
@@ -96,15 +119,14 @@
 										<input class="form-control col-9" type="text" placeholder="Podaj imię" aria-label="Imię" required name="username">
 								</div>
 							</div>
-							<?php 
-									
+							<?php 	
 									if (isset($_SESSION['e_username'])) {
 										
-										echo '<div class="row justify-content-center text-danger">'.$_SESSION['e_username'].'</div>';
+										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_username'].'</div>';
 										unset($_SESSION['e_username']);
 									}
-									
 								?>
+								
 							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
@@ -113,7 +135,14 @@
 										<input class="form-control col-9" type="text" placeholder="Podaj e-mail" aria-label="E-mail" required name="email">
 								</div>
 							</div>
-							
+							<?php 	
+									if (isset($_SESSION['e_email'])) {
+										
+										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_email'].'</div>';
+										unset($_SESSION['e_email']);
+									}
+								?>
+								
 							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
@@ -122,6 +151,13 @@
 										<input class="form-control col-9" type="password" placeholder="Podaj hasło" aria-label="Hasło" required name="password1">
 								</div>
 							</div>
+							<?php 	
+									if (isset($_SESSION['e_password'])) {
+										
+										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_password'].'</div>';
+										unset($_SESSION['e_password']);
+									}
+								?>
 							
 							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">

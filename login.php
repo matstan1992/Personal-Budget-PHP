@@ -49,5 +49,4 @@
 		$connection->close();
 	}
 	
-	
 ?>
