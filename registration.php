@@ -2,6 +2,37 @@
 
 	session_start();
 
+	if ((isset($_POST['username'])) && (isset($_POST['email'])) && (isset($_POST['password1'])) && (isset($_POST['password2']))) {
+		
+		//successful validation
+		$allGood = true;
+		
+		//username
+		$username = $_POST['username'];
+		
+		//First letter uppercase, the rest lowercase
+		$username = mb_convert_case($username, MB_CASE_TITLE, "UTF-8");
+		
+		//Length username
+		if ((strlen($username) < 3) || (strlen($username) > 20)) {
+			$allGood = false;
+			$_SESSION['e_username'] = "Imię musi posiadać od 3 do 20 znaków!";
+		}
+		
+		$alphabet = '/^[a-ząęółśżźćńA-ZĄĘÓŁŚŹŻĆŃ]+$/';	//regular expression
+		
+		if (!preg_match($alphabet, $username)) {
+			$allGood = false;
+			$_SESSION['e_username'] = "Imię musi składać się tylko ze znaków polskiego alfabetu!";
+		}
+		
+		if ($allGood == true) {
+			
+			//Adding a user to the database
+			echo "$username"; exit();
+		}
+		
+	}
 
 ?>
 
@@ -65,7 +96,15 @@
 										<input class="form-control col-9" type="text" placeholder="Podaj imię" aria-label="Imię" required name="username">
 								</div>
 							</div>
-							
+							<?php 
+									
+									if (isset($_SESSION['e_username'])) {
+										
+										echo '<div class="row justify-content-center text-danger">'.$_SESSION['e_username'].'</div>';
+										unset($_SESSION['e_username']);
+									}
+									
+								?>
 							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
