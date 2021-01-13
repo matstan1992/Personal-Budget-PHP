@@ -1,3 +1,10 @@
+<?php
+
+	session_start();
+
+
+?>
+
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head>
@@ -16,6 +23,8 @@
 	<link rel="stylesheet" href="fontello/css/fontello.css" type="text/css" />
 	<link rel="stylesheet" href="style.css" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
+	
+	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
 	
 </head>
 
@@ -46,43 +55,45 @@
 								<a href="index.php"><div class="noselected"><h3 class="h5 font-weight-bold">Logowanie</h3>(Mam konto)</div></a>	
 						</div>
 						
-						<form class="mx-auto mb-4">
+						<form class="mx-auto mb-4" method="post">
 						
-							<div class="row m-0">
+							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-user"></i></span></div>
 										<label class="sr-only">Imię użytkownika</label>
-										<input class="form-control col-9" type="text" placeholder="Podaj imię" aria-label="Imię" required>
+										<input class="form-control col-9" type="text" placeholder="Podaj imię" aria-label="Imię" required name="username">
 								</div>
 							</div>
 							
-							<div class="row m-0">
+							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-mail"></i></span></div>
 										<label class="sr-only">E-mail</label>
-										<input class="form-control col-9" type="text" placeholder="Podaj e-mail" aria-label="E-mail" required>
+										<input class="form-control col-9" type="text" placeholder="Podaj e-mail" aria-label="E-mail" required name="email">
 								</div>
 							</div>
 							
-							<div class="row m-0">
+							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-lock"></i></span></div>
 										<label class="sr-only">Hasło</label>
-										<input class="form-control col-9" type="text" placeholder="Podaj hasło" aria-label="Hasło" required>
+										<input class="form-control col-9" type="password" placeholder="Podaj hasło" aria-label="Hasło" required name="password1">
 								</div>
 							</div>
 							
-							<div class="row m-0">
+							<div class="row m-0 justify-content-center">
 								<div class="form-group form-inline">
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-lock"></i></span></div>
 										<label class="sr-only">Powtórz hasło</label>
-										<input class="form-control col-9" type="text" placeholder="Powtórz hasło" aria-label="Hasło" required>
+										<input class="form-control col-9" type="password" placeholder="Powtórz hasło" aria-label="Hasło" required name="password2">
 								</div>
 							</div>
+							
+							<div class="g-recaptcha" data-sitekey="6LdMmyoaAAAAAJisDwXWE7S4aa3MtQW87mcor05d"></div>
 							
 							<div class="row">
 								<button type="submit" class="col-12">Zarejestruj</button>
