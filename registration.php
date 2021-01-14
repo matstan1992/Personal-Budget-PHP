@@ -87,7 +87,7 @@
 				
 				if ($allGood == true) {
 					//Adding a user to the database
-					if ($connetion->query("INSERT INTO users VALUES (NULL, '$username', '$passwordHash', '$email')")) {
+					if ($connection->query("INSERT INTO users VALUES (NULL, '$username', '$passwordHash', '$email')")) {
 						$_SESSION['successfulRegistration'] = true;
 						header('Location: welcome.php');
 					} else {
