@@ -49,12 +49,59 @@
 			$_SESSION['e_password'] = "Podane hasła nie są identyczne!";
 		}
 		
-		if ($allGood == true) {
-			
-			//Adding a user to the database
-			echo "$username"; exit();
+		//password hash
+		$passwordHash = password_hash($password1, PASSWORD_DEFAULT);
+
+		//reCAPTCHA
+		$secretKey = "6LdMmyoaAAAAAGBm3gI0UkqLUfwCsxPvnxuDXNQg";
+		
+		$check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
+		
+		$answer = json_decode($check);
+		
+		if ($answer->success == false) {
+			$allGood = false;
+			$_SESSION['e_captcha'] = "Potwierdź, że nie jesteś botem!";
 		}
 		
+		require_once "connect.php";
+		mysqli_report(MYSQLI_REPORT_STRICT);
+		
+		try {
+			$connection = new mysqli($host, $db_user, $db_password, $db_name);
+			
+			if ($connection->connect_errno != 0) {
+				throw new Exception(mysqli_connect_errno());
+			} else {
+				//email already exist in the database?
+				$emailAlreadyExistInTheDatabase = $connection->query("SELECT id FROM users WHERE email='$email'");
+				
+				if (!$emailAlreadyExistInTheDatabase) throw new Exception($connection->error);
+				
+				$howManyEmailAlreadyExist = $emailAlreadyExistInTheDatabase->num_rows;
+				
+				if ($howManyEmailAlreadyExist > 0) {
+					$allGood = false;
+					$_SESSION['e_email'] = "Istnieje już konto o podanym adresie e-mail!";
+				}
+				
+				if ($allGood == true) {
+					//Adding a user to the database
+					if ($connetion->query("INSERT INTO users VALUES (NULL, '$username', '$passwordHash', '$email')")) {
+						$_SESSION['successfulRegistration'] = true;
+						header('Location: welcome.php');
+					} else {
+						throw new Exception($connection->error);
+					}
+				}
+				
+				$connection->close();
+			}
+			
+		} catch(Exception $e) {
+			echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
+			echo '<br />Informacja developerska: '.$e;
+		}
 	}
 
 ?>
@@ -169,6 +216,13 @@
 							</div>
 							
 							<div class="g-recaptcha" data-sitekey="6LdMmyoaAAAAAJisDwXWE7S4aa3MtQW87mcor05d"></div>
+							<?php 	
+									if (isset($_SESSION['e_captcha'])) {
+										
+										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_captcha'].'</div>';
+										unset($_SESSION['e_captcha']);
+									}
+								?>
 							
 							<div class="row">
 								<button type="submit" class="col-12">Zarejestruj</button>
