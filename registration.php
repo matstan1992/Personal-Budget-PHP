@@ -96,13 +96,26 @@
 					//Adding a user to the database
 					if ($connection->query("INSERT INTO users VALUES (NULL, '$username', '$passwordHash', '$email')")) {
 						
-						$_SESSION['successfulRegistration'] = true;
-						header('Location: welcome.php');
+						if ($connection->query("INSERT INTO expenses_category_assigned_to_users(user_id, name) SELECT u.id, d.name FROM users AS u CROSS JOIN expenses_category_default AS d WHERE u.email='$email'")) {
+							
+							if ($connection->query("INSERT INTO incomes_category_assigned_to_users(user_id, name) SELECT u.id, d.name FROM users AS u CROSS JOIN incomes_category_default AS d WHERE u.email='$email'")) {
+								
+								if ($connection->query("INSERT INTO payment_methods_assigned_to_users(user_id, name) SELECT u.id, d.name FROM users AS u CROSS JOIN payment_methods_default AS d WHERE u.email='$email'")) {
+									$_SESSION['successfulRegistration'] = true;
+									header('Location: welcome.php');
+								} else {
+									throw new Exception($connection->error);
+								}
+							} else {
+								throw new Exception($connection->error);
+							}
+						} else {
+							throw new Exception($connection->error);
+						}		
 					} else {
 						throw new Exception($connection->error);
 					}
 				}
-				
 				$connection->close();
 			}
 			
