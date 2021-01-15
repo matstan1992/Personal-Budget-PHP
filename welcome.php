@@ -2,9 +2,11 @@
 
 	session_start();
 	
-	if ((isset($_SESSION['logged'])) && ($_SESSION['logged'] == true)) {
-		header('Location: menu.php');
+	if (!isset($_SESSION['successfulRegistration'])) {
+		header('Location: index.php');
 		exit();
+	} else {
+		unset($_SESSION['successfulRegistration']);
 	}
 	
 ?>
@@ -52,38 +54,11 @@
 					
 					<section class="row content col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-white my-auto mx-auto">
 					
-						<div class="mx-auto mt-4 mb-3">			
-								<a href="registration.php"><div class="noselected mr-2"><h3 class="h5 font-weight-bold">Rejestracja</h3>(Nie mam konta)</div></a>
-								<div class="selected"><h3 class="h5 font-weight-bold">Logowanie</h3>(Mam konto)</div>	
+						<div class="mx-auto text-center mt-4 mb-3">			
+							Dziękujemy za rejestrację w serwisie!<br />Możesz już zalogować się na swoje konto! <br /><br />
+							Za chwilę nastąpi przekierowanie na stronę logowania...
+							<?php header('Refresh: 5; URL=index.php'); ?>
 						</div>
-						
-						<form class="mx-auto mb-4" action="login.php" method="post">
-						
-							<div class="row m-0">
-								<div class="form-group form-inline">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="icon-mail"></i></span></div>
-										<label class="sr-only">E-mail</label>
-										<input class="form-control col-9" type="email" placeholder="Podaj e-mail" aria-label="E-mail" required name="email">
-								</div>
-							</div>
-							
-							<div class="row m-0">
-								<div class="form-group form-inline">
-									<div class="input-group-prepend">
-										<span class="input-group-text"><i class="icon-lock"></i></span></div>
-										<label class="sr-only">Hasło</label>
-										<input class="form-control col-9" type="password" placeholder="Podaj hasło" aria-label="Hasło" required name="password">
-								</div>
-							</div>
-							
-							<div class="row">
-								<button type="submit" class="col-12">Zaloguj</button>
-							</div>
-							<?php
-								if (isset($_SESSION['error'])) 	echo $_SESSION['error'];
-							?>
-						</form>
 						
 					</section>
 				</div>
