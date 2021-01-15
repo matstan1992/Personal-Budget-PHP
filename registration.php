@@ -64,6 +64,13 @@
 			$_SESSION['e_captcha'] = "Potwierdź, że nie jesteś botem!";
 		}
 		
+		//remember the entered data
+		$_SESSION['fr_username'] = $username;
+		$_SESSION['fr_email'] = $email;
+		$_SESSION['fr_password1'] = $password1;
+		$_SESSION['fr_password2'] = $password2;
+
+		
 		require_once "connect.php";
 		mysqli_report(MYSQLI_REPORT_STRICT);
 		
@@ -88,6 +95,7 @@
 				if ($allGood == true) {
 					//Adding a user to the database
 					if ($connection->query("INSERT INTO users VALUES (NULL, '$username', '$passwordHash', '$email')")) {
+						
 						$_SESSION['successfulRegistration'] = true;
 						header('Location: welcome.php');
 					} else {
@@ -100,7 +108,7 @@
 			
 		} catch(Exception $e) {
 			echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
-			echo '<br />Informacja developerska: '.$e;
+			//echo '<br />Informacja developerska: '.$e;
 		}
 	}
 
@@ -163,12 +171,15 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-user"></i></span></div>
 										<label class="sr-only">Imię użytkownika</label>
-										<input class="form-control col-9" type="text" placeholder="Podaj imię" aria-label="Imię" required name="username">
+										<input class="form-control col-9" type="text" placeholder="Podaj imię" aria-label="Imię" required value="<?php
+											if (isset($_SESSION['fr_username'])) {
+												echo $_SESSION['fr_username'];
+												unset($_SESSION['fr_username']);
+											}?>" name="username">
 								</div>
 							</div>
 							<?php 	
-									if (isset($_SESSION['e_username'])) {
-										
+									if (isset($_SESSION['e_username'])) {		
 										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_username'].'</div>';
 										unset($_SESSION['e_username']);
 									}
@@ -179,12 +190,15 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-mail"></i></span></div>
 										<label class="sr-only">E-mail</label>
-										<input class="form-control col-9" type="text" placeholder="Podaj e-mail" aria-label="E-mail" required name="email">
+										<input class="form-control col-9" type="text" placeholder="Podaj e-mail" aria-label="E-mail" required value="<?php
+											if (isset($_SESSION['fr_email'])) {
+												echo $_SESSION['fr_email'];
+												unset($_SESSION['fr_email']);
+											}?>" name="email">
 								</div>
 							</div>
 							<?php 	
-									if (isset($_SESSION['e_email'])) {
-										
+									if (isset($_SESSION['e_email'])) {		
 										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_email'].'</div>';
 										unset($_SESSION['e_email']);
 									}
@@ -195,12 +209,15 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-lock"></i></span></div>
 										<label class="sr-only">Hasło</label>
-										<input class="form-control col-9" type="password" placeholder="Podaj hasło" aria-label="Hasło" required name="password1">
+										<input class="form-control col-9" type="password" placeholder="Podaj hasło" aria-label="Hasło" required value="<?php
+											if (isset($_SESSION['fr_password1'])) {
+												echo $_SESSION['fr_password1'];
+												unset($_SESSION['fr_password1']);
+											}?>" name="password1">
 								</div>
 							</div>
 							<?php 	
 									if (isset($_SESSION['e_password'])) {
-										
 										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_password'].'</div>';
 										unset($_SESSION['e_password']);
 									}
@@ -211,14 +228,17 @@
 									<div class="input-group-prepend">
 										<span class="input-group-text"><i class="icon-lock"></i></span></div>
 										<label class="sr-only">Powtórz hasło</label>
-										<input class="form-control col-9" type="password" placeholder="Powtórz hasło" aria-label="Hasło" required name="password2">
+										<input class="form-control col-9" type="password" placeholder="Powtórz hasło" aria-label="Hasło" required value="<?php
+											if (isset($_SESSION['fr_password2'])) {
+												echo $_SESSION['fr_password2'];
+												unset($_SESSION['fr_password2']);
+											}?>" name="password2">
 								</div>
 							</div>
 							
 							<div class="g-recaptcha" data-sitekey="6LdMmyoaAAAAAJisDwXWE7S4aa3MtQW87mcor05d"></div>
 							<?php 	
 									if (isset($_SESSION['e_captcha'])) {
-										
 										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_captcha'].'</div>';
 										unset($_SESSION['e_captcha']);
 									}
