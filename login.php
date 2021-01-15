@@ -8,45 +8,54 @@
 	}
 
 	require_once "connect.php";
+	mysqli_report(MYSQLI_REPORT_STRICT);
 	
-	$connection = @new mysqli($host, $db_user, $db_password, $db_name);
-	
-	if ($connection->connect_errno != 0) {
-		echo "Error: ".$connection->connect_errno;	
-	} else {
-		$email = $_POST['email'];
-		$password = $_POST['password'];
+	try {
+		$connection = new mysqli($host, $db_user, $db_password, $db_name);
 		
-		$email = htmlentities($email, ENT_QUOTES, "UTF-8");
-		
-		if ($resultOfQuery = @$connection->query(sprintf("SELECT * FROM users WHERE email = '%s'", 
-		mysqli_real_escape_string($connection, $email)))) {
-			$howManyUsers = $resultOfQuery->num_rows;
+		if ($connection->connect_errno != 0) {
+			throw new Exception(mysqli_connect_errno());
+		} else {
+			$email = $_POST['email'];
+			$password = $_POST['password'];
 			
-			if ($howManyUsers > 0) {
-				$userData = $resultOfQuery->fetch_assoc();
+			$email = htmlentities($email, ENT_QUOTES, "UTF-8");
+			
+			if ($resultOfQuery = $connection->query(sprintf("SELECT * FROM users WHERE email = '%s'", 
+			mysqli_real_escape_string($connection, $email)))) {
+				$howManyUsers = $resultOfQuery->num_rows;
+				
+				if ($howManyUsers > 0) {
+					$userData = $resultOfQuery->fetch_assoc();
+						
+					if (password_verify($password, $userData['password'])) {
+						$_SESSION['logged'] = true;
+						
+						$_SESSION['id'] = $userData['id'];
+						$_SESSION['username'] = $userData['username'];
+						$_SESSION['email'] = $userData['email'];
+						
+						unset($_SESSION['error']);
+						$resultOfQuery->free_result();
+						header('Location: menu.php');
+					} 	else {
+						$_SESSION['error'] = '<span style="color:red">Nieprawidłowy e-mail lub hasło</span>';
+						header('Location: index.php');
+					}
 					
-				if (password_verify($password, $userData['password'])) {
-					$_SESSION['logged'] = true;
-					
-					$_SESSION['id'] = $userData['id'];
-					$_SESSION['username'] = $userData['username'];
-					$_SESSION['email'] = $userData['email'];
-					
-					unset($_SESSION['error']);
-					$resultOfQuery->free_result();
-					header('Location: menu.php');
-				} 	else {
+				} else {
 					$_SESSION['error'] = '<span style="color:red">Nieprawidłowy e-mail lub hasło</span>';
 					header('Location: index.php');
 				}
-				
 			} else {
-				$_SESSION['error'] = '<span style="color:red">Nieprawidłowy e-mail lub hasło</span>';
-				header('Location: index.php');
+				throw new Exception($connection->error);
 			}
+			
+			$connection->close();
 		}
-		$connection->close();
+	} catch(Exception $e) {
+		echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o wizytę w innym terminie!</span>';
+		//echo '<br />Informacja developerska: '.$e;
 	}
 	
 ?>
