@@ -1,3 +1,55 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['logged'])) {
+		header('Location: index.php');
+		exit();
+	}
+	
+	if  ((isset($_POST['amount'])) && (isset($_POST['date'])) && (isset($_POST['paymentMethod'])) && (isset($_POST['category']))) {
+		
+		//successful validation
+		$allGood = true;
+		
+		//amount
+		$expenseAmount = $_POST['amount'];
+		
+		//change separator (comma / dot)
+		if (strpos($expenseAmount, ",") == true) {
+			$expenseAmount = str_replace(",", ".", $expenseAmount);
+		}
+		
+		if (!is_numeric($expenseAmount) || $expenseAmount < 0) {
+			$allGood = false;
+			$_SESSION['e_expenseAmount'] = "Wprowadzona kwota musi być liczbą dodatnią!";
+		}
+		
+		if ($expenseAmount > 1000000000) {
+			$allGood = false;
+			$_SESSION['e_expenseAmount'] = "Maksymalna kwota wydatku to 1 000 000 000 zł";
+		}
+		
+		//date
+		$expenseDate = $_POST['date'];
+		
+		$currentDate = date('Y-m-d');
+		
+		if ($expenseDate > $currentDate) {
+			$allGood = false;
+			$_SESSION['e_expenseDate'] = "Data musi być dzisiejsza lub wcześniejsza (max 01-01-2000)";	
+		}
+		
+		if ($expenseDate < '2000-01-01') {
+			$allGood = false;
+			$_SESSION['e_expenseDate'] = "Data nie może być wcześniejsza niż 01-01-2000";	
+		}
+		
+
+	}
+	
+?>
+
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head>
@@ -60,7 +112,7 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link" href="index.php"><i class="icon-logout"> Wyloguj (Użytkownik) </i></a>
+						<a class="nav-link" href="index.php"><i class="icon-logout"> Wyloguj (<?= $_SESSION['username']; ?>) </i></a>
 					</li>
 					
 				</ul>
@@ -75,7 +127,7 @@
 				<div class="container">
 					<div class="row">
 						<div class="mx-auto">
-							<form class="text-center">
+							<form class="text-center" method="post">
 								<h2 class="font-weight-bold mt-4">Dodaj wydatek</h2>
 
 								<div class="row mx-auto mt-4">
@@ -87,6 +139,12 @@
 										<input type="number" name="amount" min="0" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required>
 									</div>
 								</div>
+								<?php 	
+									if (isset($_SESSION['e_expenseAmount'])) {
+										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_expenseAmount'].'</div>';
+										unset($_SESSION['e_expenseAmount']);
+									}
+								?>
 								
 								<div class="row mx-auto mt-4">
 									<div class="form-group form-inline mx-auto">
@@ -97,8 +155,14 @@
 										<input type="date" id="date" name="date" aria-label="Data" required>
 									</div>
 								</div>
+								<?php 	
+									if (isset($_SESSION['e_expenseDate'])) {
+										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_expenseDate'].'</div>';
+										unset($_SESSION['e_expenseDate']);
+									}
+								?>
 
-								<fieldset class="mx-auto">
+								<fieldset class="mx-auto mt-4">
 									
 									<legend class="font-weight-bold">Sposób płatności:</legend>
 									<div class="mt-2">
@@ -154,7 +218,7 @@
 		</main>
 		
 		<footer class="container-fluid p-3 mt-4 text-center text-white">
-			Wszelkie prawa zastrzeżone &copy; 2020  Dziękuję za wizytę!
+			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
 		</footer>
 		
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
