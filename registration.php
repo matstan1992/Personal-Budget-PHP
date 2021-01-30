@@ -120,7 +120,7 @@
 			}
 			
 		} catch(Exception $e) {
-			echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności i prosimy o rejestrację w innym terminie!</span>';
+			echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności. Prosimy o rejestrację w innym terminie!</span>';
 			//echo '<br />Informacja developerska: '.$e;
 		}
 	}
@@ -269,7 +269,7 @@
 		</main>
 		
 		<footer class="container-fluid p-3 mt-4 text-center text-white">
-			Wszelkie prawa zastrzeżone &copy; 2020  Dziękuję za wizytę!
+			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
 		</footer>
 	
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

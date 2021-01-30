@@ -6,6 +6,21 @@
 		header('Location: index.php');
 		exit();
 	}
+	
+	//delete the entered data
+	if (isset($_SESSION['fr_expenseAmount'])) unset($_SESSION['fr_expenseAmount']);
+	if (isset($_SESSION['fr_expenseDate'])) unset($_SESSION['fr_expenseDate']);
+	if (isset($_SESSION['fr_expensePaymentMethod'])) unset($_SESSION['fr_expensePaymentMethod']);
+	if (isset($_SESSION['fr_expenseCategory'])) unset($_SESSION['fr_expenseCategory']);
+	if (isset($_SESSION['fr_comment'])) unset($_SESSION['fr_comment']);
+	
+	//delete errors
+	if (isset($_SESSION['e_expenseAmount'])) unset($_SESSION['e_expenseAmount']);	
+	if (isset($_SESSION['e_expenseDate'])) unset($_SESSION['e_expenseDate']);	
+	if (isset($_SESSION['e_expensePaymentMethod'])) unset($_SESSION['e_expensePaymentMethod']);
+	if (isset($_SESSION['e_expenseCategory'])) unset($_SESSION['e_expenseCategory']);
+	if (isset($_SESSION['e_comment'])) unset($_SESSION['e_comment']);
+	
 ?>
 
 <!DOCTYPE HTML>
@@ -81,6 +96,12 @@
 		
 			<div class="container mt-3 text-center">
 				<h2 class="mt-5 mb-3"><?= "Witaj ".$_SESSION['username'].", co dziś robimy?"; ?></h2>
+				<?php 
+					if (isset($_SESSION['saveExpense']) && $_SESSION['saveExpense'] == true) {
+						echo '<div class="mb-3"><span style="color: green; font-size: 20px; font-weight: bold;">Wydatek został dodany pomyślnie</span></div>';
+						unset ($_SESSION['saveExpense']);
+					} 
+				?>
 				<img class="imagemenu" src="img/imgmenu.jpg" alt="">
 				<h3 class="mt-3">Zaczynajmy!</h3>
 			</div>
@@ -88,7 +109,7 @@
 		</main>
 		
 		<footer class="container-fluid p-3 mt-4 text-center text-white">
-			Wszelkie prawa zastrzeżone &copy; 2020  Dziękuję za wizytę!
+			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
 		</footer>
 		
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
