@@ -194,8 +194,8 @@
 							<form class="text-center" method="post">
 								<h2 class="font-weight-bold mt-4">Dodaj wydatek</h2>
 
-								<div class="row mx-auto mt-4">
-									<div class="form-group form-inline mx-auto">
+								<div class="row mx-auto mt-4 mb-0">
+									<div class="form-group form-inline mx-auto mb-2">
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="icon-money-1"></i></span>
 										</div>
@@ -214,8 +214,8 @@
 									}
 								?>
 								
-								<div class="row mx-auto mt-4">
-									<div class="form-group form-inline mx-auto">
+								<div class="row mx-auto mt-4 mb-0">
+									<div class="form-group form-inline mx-auto mb-2">
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="icon-calendar"></i></span>
 										</div>
@@ -280,15 +280,15 @@
 												//echo '<br />Informacja developerska: '.$e;
 											}
 										?>
-										<?php 	
-											if (isset($_SESSION['e_expensePaymentMethod'])) {
-												echo '<div class="row mx-auto justify-content-center text-danger">'.$_SESSION['e_expensePaymentMethod'].'</div>';
-												unset($_SESSION['e_expensePaymentMethod']);
-											}
-										?>
 									</div>
 								</fieldset>
-
+								<?php 	
+									if (isset($_SESSION['e_expensePaymentMethod'])) {
+										echo '<div class="row mx-auto justify-content-center text-danger">'.$_SESSION['e_expensePaymentMethod'].'</div>';
+										unset($_SESSION['e_expensePaymentMethod']);
+									}
+								?>
+								
 								<fieldset class="mx-auto mt-4">
 									
 									<legend class="font-weight-bold mb-3">Kategoria:</legend>
@@ -311,7 +311,7 @@
 			
 												if ($howManyNames > 0) {
 													while ($row = $resultOfQuery->fetch_assoc()) {
-														echo '<div class="column col-sm-4" style="width: 350px; padding: 1.5px;">';
+														echo '<div class="column col-sm-4" style="width: 290px; padding: 1.5px;">';
 														echo '<label>';
 														echo '<input type="radio" name="category" value="'.$row['name'];
 														
@@ -333,15 +333,15 @@
 											//echo '<br />Informacja developerska: '.$e;
 										}
 									?>
-									<?php
-										if (isset($_SESSION['e_expenseCategory'])) {
-											echo '<div class="row mx-auto justify-content-center text-danger">'.$_SESSION['e_expenseCategory'].'</div>';
-											unset($_SESSION['e_expenseCategory']);
-										}
-									?>
 								</fieldset>
-									
-								<div class="mx-auto mt-4">
+								<?php
+									if (isset($_SESSION['e_expenseCategory'])) {
+										echo '<div class="row mx-auto justify-content-center text-danger">'.$_SESSION['e_expenseCategory'].'</div>';
+										unset($_SESSION['e_expenseCategory']);
+									}
+								?>
+								
+								<div class="mx-auto mt-4 mb-1">
 									<label class="h4 font-weight-bold">Komentarz (opcjonalnie):</label>
 									<textarea name="comment" class="col-10" rows="2" cols="50"><?php
 											if (isset($_SESSION['fr_comment'])) {
@@ -351,7 +351,7 @@
 								</div>
 								<?php 	
 									if (isset($_SESSION['e_comment'])) {
-										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_comment'].'</div>';
+										echo '<div class="row mb-2 justify-content-center text-danger mx-auto">'.$_SESSION['e_comment'].'</div>';
 										unset($_SESSION['e_comment']);
 									}
 								?>

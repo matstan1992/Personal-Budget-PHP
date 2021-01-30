@@ -7,18 +7,30 @@
 		exit();
 	}
 	
-	//delete the entered data
+	//delete the entered data (expense)
 	if (isset($_SESSION['fr_expenseAmount'])) unset($_SESSION['fr_expenseAmount']);
 	if (isset($_SESSION['fr_expenseDate'])) unset($_SESSION['fr_expenseDate']);
 	if (isset($_SESSION['fr_expensePaymentMethod'])) unset($_SESSION['fr_expensePaymentMethod']);
 	if (isset($_SESSION['fr_expenseCategory'])) unset($_SESSION['fr_expenseCategory']);
 	if (isset($_SESSION['fr_comment'])) unset($_SESSION['fr_comment']);
 	
-	//delete errors
+	//delete errors (expense)
 	if (isset($_SESSION['e_expenseAmount'])) unset($_SESSION['e_expenseAmount']);	
 	if (isset($_SESSION['e_expenseDate'])) unset($_SESSION['e_expenseDate']);	
 	if (isset($_SESSION['e_expensePaymentMethod'])) unset($_SESSION['e_expensePaymentMethod']);
 	if (isset($_SESSION['e_expenseCategory'])) unset($_SESSION['e_expenseCategory']);
+	if (isset($_SESSION['e_comment'])) unset($_SESSION['e_comment']);
+	
+	//delete the entered data (income)
+	if (isset($_SESSION['fr_incomeAmount'])) unset($_SESSION['fr_incomeAmount']);
+	if (isset($_SESSION['fr_incomeDate'])) unset($_SESSION['fr_incomeDate']);
+	if (isset($_SESSION['fr_incomeCategory'])) unset($_SESSION['fr_incomeCategory']);
+	if (isset($_SESSION['fr_comment'])) unset($_SESSION['fr_comment']);
+	
+	//delete errors (income)
+	if (isset($_SESSION['e_incomeAmount'])) unset($_SESSION['e_incomeAmount']);	
+	if (isset($_SESSION['e_incomeDate'])) unset($_SESSION['e_incomeDate']);	
+	if (isset($_SESSION['e_incomeCategory'])) unset($_SESSION['e_incomeCategory']);
 	if (isset($_SESSION['e_comment'])) unset($_SESSION['e_comment']);
 	
 ?>
@@ -100,6 +112,10 @@
 					if (isset($_SESSION['saveExpense']) && $_SESSION['saveExpense'] == true) {
 						echo '<div class="mb-3"><span style="color: green; font-size: 20px; font-weight: bold;">Wydatek został dodany pomyślnie</span></div>';
 						unset ($_SESSION['saveExpense']);
+					} 
+					if (isset($_SESSION['saveIncome']) && $_SESSION['saveIncome'] == true) {
+						echo '<div class="mb-3"><span style="color: green; font-size: 20px; font-weight: bold;">Przychód został dodany pomyślnie</span></div>';
+						unset ($_SESSION['saveIncome']);
 					} 
 				?>
 				<img class="imagemenu" src="img/imgmenu.jpg" alt="">
