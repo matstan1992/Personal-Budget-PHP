@@ -7,7 +7,7 @@
 		exit();
 	}
 	
-	if  ((isset($_POST['amount'])) && (isset($_POST['date'])) && (isset($_POST['paymentMethod'])) && (isset($_POST['category']))) {
+	if  (isset($_POST['amount'])) {
 		
 		//successful validation
 		$allGood = true;
@@ -25,9 +25,9 @@
 			$_SESSION['e_expenseAmount'] = "Wprowadzona kwota musi być liczbą dodatnią!";
 		}
 		
-		if ($expenseAmount > 1000000000) {
+		if ($expenseAmount >= 1000000) {
 			$allGood = false;
-			$_SESSION['e_expenseAmount'] = "Maksymalna kwota wydatku to 1 000 000 000 zł";
+			$_SESSION['e_expenseAmount'] = "Maksymalna kwota wydatku to 999 999.99 zł";
 		}
 		
 		//date
@@ -45,7 +45,71 @@
 			$_SESSION['e_expenseDate'] = "Data nie może być wcześniejsza niż 01-01-2000";	
 		}
 		
+		//category
+		if(isset($_POST['category'])) 
+		{
+			$expenseCategory = $_POST['category'];
+			$_SESSION['fr_expenseCategory'] = $expenseCategory;
+		}
+		else
+		{
+			$allGood = false;
+			$_SESSION['e_expenseCategory'] = "Wybierz kategorię wydatku";
+		}
+		
+		//paymentMethod
+		if(isset($_POST['paymentMethod'])) 
+		{
+			$expensePaymentMethod = $_POST['paymentMethod'];
+			$_SESSION['fr_expensePaymentMethod'] = $expensePaymentMethod;
+		}
+		else
+		{
+			$allGood = false;
+			$_SESSION['e_expensePaymentMethod'] = "Wybierz sposób płatności";
+		}
+		
+		//comment
+		$comment = $_POST['comment'];
+		$comment = htmlentities($comment, ENT_QUOTES, "UTF-8");
+		
+		if (strlen($comment) > 100) {
+			$allGood = false;
+			$_SESSION['e_comment'] = "Komentarz może zawierać maksymalnie 100 znaków";
+		}
+		
+		//remember the entered data
+		$_SESSION['fr_expenseAmount'] = $expenseAmount;
+		$_SESSION['fr_expenseDate'] = $expenseDate;
+		$_SESSION['fr_comment'] = $comment;
 
+		if ($allGood == true) {
+			require_once "connect.php";
+			mysqli_report(MYSQLI_REPORT_STRICT);
+			
+			try {
+				$connection = new mysqli($host, $db_user, $db_password, $db_name);
+				
+				if ($connection->connect_errno != 0) {
+					throw new Exception(mysqli_connect_errno());
+				} else {
+					$userId  = $_SESSION['id'];
+					
+					if ($connection->query("INSERT INTO expenses VALUES (NULL, '$userId', (SELECT id FROM expenses_category_assigned_to_users WHERE user_id = '$userId' AND name = '$expenseCategory'), (SELECT id FROM payment_methods_assigned_to_users WHERE user_id = '$userId' AND name = '$expensePaymentMethod'), '$expenseAmount', '$expenseDate', '$comment')")) {
+						$_SESSION['saveExpense'] = true;
+						header('Location: menu.php');	
+					} else {
+						throw new Exception($connection->error);
+					}
+				}
+				$connection->close();
+				
+			} catch(Exception $e) {
+				echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności. Prosimy spróbować w innym terminie!</span>';
+				//echo '<br />Informacja developerska: '.$e;
+			}
+		
+		}
 	}
 	
 ?>
@@ -112,7 +176,7 @@
 					</li>
 					
 					<li class="nav-item">
-						<a class="nav-link" href="index.php"><i class="icon-logout"> Wyloguj (<?= $_SESSION['username']; ?>) </i></a>
+						<a class="nav-link" href="logout.php"><i class="icon-logout"> Wyloguj (<?= $_SESSION['username']; ?>) </i></a>
 					</li>
 					
 				</ul>
@@ -136,12 +200,16 @@
 											<span class="input-group-text"><i class="icon-money-1"></i></span>
 										</div>
 										<label class="sr-only">Kwota</label>
-										<input type="number" name="amount" min="0" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required>
+										<input type="number" name="amount" min="0" step="0.01" placeholder="Podaj kwotę w zł" aria-label="Kwota" required value="<?php
+											if (isset($_SESSION['fr_expenseAmount'])) {
+												echo $_SESSION['fr_expenseAmount'];
+												unset($_SESSION['fr_expenseAmount']);
+											}?>">
 									</div>
 								</div>
 								<?php 	
 									if (isset($_SESSION['e_expenseAmount'])) {
-										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_expenseAmount'].'</div>';
+										echo '<div class="row mb-2 mx-auto justify-content-center text-danger">'.$_SESSION['e_expenseAmount'].'</div>';
 										unset($_SESSION['e_expenseAmount']);
 									}
 								?>
@@ -152,58 +220,141 @@
 											<span class="input-group-text"><i class="icon-calendar"></i></span>
 										</div>
 										<label class="sr-only">Data</label>
-										<input type="date" id="date" name="date" aria-label="Data" required>
+										<input type="date" id="date" name="date" aria-label="Data" required value="<?php
+											if (isset($_SESSION['fr_expenseDate'])) {
+												echo $_SESSION['fr_expenseDate'];
+												unset($_SESSION['fr_expenseDate']);
+											} else {
+												echo date('Y-m-d');
+											}?>">
 									</div>
 								</div>
 								<?php 	
 									if (isset($_SESSION['e_expenseDate'])) {
-										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_expenseDate'].'</div>';
+										echo '<div class="row mb-2 mx-auto justify-content-center text-danger">'.$_SESSION['e_expenseDate'].'</div>';
 										unset($_SESSION['e_expenseDate']);
 									}
 								?>
-
 								<fieldset class="mx-auto mt-4">
 									
 									<legend class="font-weight-bold">Sposób płatności:</legend>
 									<div class="mt-2">
-										<div class="d-inline-block"><label><input type="radio" value="cash" name="paymentMethod" checked> Gotówka </label></div>
-										<div class="d-inline-block mr-4 ml-4"><label><input type="radio" value="debitCard" name="paymentMethod"> Karta debetowa </label></div>
-										<div class="d-inline-block"><label><input type="radio" value="creditCard" name="paymentMethod"> Karta kredytowa </label></div>
+										<?php
+											require_once "connect.php";
+											mysqli_report(MYSQLI_REPORT_STRICT);
+			
+											try {
+												$connection = new mysqli($host, $db_user, $db_password, $db_name);
+				
+												if ($connection->connect_errno != 0) {
+													throw new Exception(mysqli_connect_errno());
+												} else {
+													$userId  = $_SESSION['id'];
+													
+													if (!$resultOfQuery = $connection->query(sprintf("SELECT name FROM payment_methods_assigned_to_users WHERE user_id = '%s'", 
+													mysqli_real_escape_string($connection, $userId)))) throw new Exception($connection->error);
+			
+													$howManyNames = $resultOfQuery->num_rows;
+				
+													if ($howManyNames > 0) {
+														while ($row = $resultOfQuery->fetch_assoc()) {
+															echo '<div class="d-inline-block mr-3">';
+															echo '<label>';
+															echo '<input type="radio" name="paymentMethod" value="'.$row['name'];
+															
+															if (isset($_SESSION['fr_expensePaymentMethod'])) {
+																if ($row['name'] == $_SESSION['fr_expensePaymentMethod']) {
+																	echo '"checked = checked"';
+																}
+															}
+															
+															echo '">'.$row['name'].'</label>';
+															echo '</div>';
+														}
+														$resultOfQuery->free_result();
+													}
+												}
+												$connection->close();
+											} catch (Exception $e) {
+												echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności. Prosimy spróbować w innym terminie!</span>';
+												//echo '<br />Informacja developerska: '.$e;
+											}
+										?>
+										<?php 	
+											if (isset($_SESSION['e_expensePaymentMethod'])) {
+												echo '<div class="row mx-auto justify-content-center text-danger">'.$_SESSION['e_expensePaymentMethod'].'</div>';
+												unset($_SESSION['e_expensePaymentMethod']);
+											}
+										?>
 									</div>
 								</fieldset>
 
 								<fieldset class="mx-auto mt-4">
 									
-									<legend class="font-weight-bold">Kategoria:</legend>
-									<div class="column">
-										<div><label><input type="radio" value="food" name="category" checked> Jedzenie </label></div>
-										<div><label><input type="radio" value="flat" name="category"> Mieszkanie </label></div>
-										<div><label><input type="radio" value="transport" name="category"> Transport </label></div>
-										<div><label><input type="radio" value="telecommunication" name="category"> Telekomunikacja </label></div>
-										<div><label><input type="radio" value="healthcare" name="category"> Opieka zdrowotna </label></div>
-										<div><label><input type="radio" value="clothes" name="category"> Ubranie </label></div>
-									</div>
-									<div class="column">
-										<div><label><input type="radio" value="hygiene" name="category"> Higiena </label></div>
-										<div><label><input type="radio" value="children" name="category"> Dzieci </label></div>
-										<div><label><input type="radio" value="entertainment" name="category"> Rozrywka </label></div>
-										<div><label><input type="radio" value="tour" name="category"> Wycieczka </label></div>
-										<div><label><input type="radio" value="training" name="category"> Szkolenia </label></div>
-										<div><label><input type="radio" value="books" name="category"> Książki </label></div>
-									</div>
-									<div class="column">
-										<div><label><input type="radio" value="savings" name="category"> Oszczędności </label></div>
-										<div><label><input type="radio" value="pension" name="category"> Emerytura </label></div>
-										<div><label><input type="radio" value="debtRepayment" name="category"> Spłata długów </label></div>
-										<div><label><input type="radio" value="donation" name="category"> Darowizna </label></div>
-										<div><label><input type="radio" value="otherExpenses" name="category"> Inne wydatki </label></div>
-									</div>
+									<legend class="font-weight-bold mb-3">Kategoria:</legend>
+									<?php
+										require_once "connect.php";
+										mysqli_report(MYSQLI_REPORT_STRICT);
+		
+										try {
+											$connection = new mysqli($host, $db_user, $db_password, $db_name);
+			
+											if ($connection->connect_errno != 0) {
+												throw new Exception(mysqli_connect_errno());
+											} else {
+												$userId  = $_SESSION['id'];
+												
+												if (!$resultOfQuery = $connection->query(sprintf("SELECT name FROM expenses_category_assigned_to_users WHERE user_id = '%s'", 
+												mysqli_real_escape_string($connection, $userId)))) throw new Exception($connection->error);
+		
+												$howManyNames = $resultOfQuery->num_rows;
+			
+												if ($howManyNames > 0) {
+													while ($row = $resultOfQuery->fetch_assoc()) {
+														echo '<div class="column col-sm-4" style="width: 350px; padding: 1.5px;">';
+														echo '<label>';
+														echo '<input type="radio" name="category" value="'.$row['name'];
+														
+														if (isset($_SESSION['fr_expenseCategory'])) {
+															if ($row['name'] == $_SESSION['fr_expenseCategory']) {
+																echo '"checked = checked"';
+															}
+														}
+														
+														echo '">'.$row['name'].'</label>';
+														echo '</div>';
+													}
+													$resultOfQuery->free_result();
+												}
+											}
+											$connection->close();
+										} catch (Exception $e) {
+											echo '<span style="color: red;">Błąd serwera! Przepraszamy za niedogodności. Prosimy spróbować w innym terminie!</span>';
+											//echo '<br />Informacja developerska: '.$e;
+										}
+									?>
+									<?php
+										if (isset($_SESSION['e_expenseCategory'])) {
+											echo '<div class="row mx-auto justify-content-center text-danger">'.$_SESSION['e_expenseCategory'].'</div>';
+											unset($_SESSION['e_expenseCategory']);
+										}
+									?>
 								</fieldset>
 									
 								<div class="mx-auto mt-4">
 									<label class="h4 font-weight-bold">Komentarz (opcjonalnie):</label>
-									<textarea name="comment" class="col-10" rows="2" cols="50"></textarea>
+									<textarea name="comment" class="col-10" rows="2" cols="50"><?php
+											if (isset($_SESSION['fr_comment'])) {
+												echo $_SESSION['fr_comment'];
+												unset($_SESSION['fr_comment']);
+											}?></textarea>
 								</div>
+								<?php 	
+									if (isset($_SESSION['e_comment'])) {
+										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_comment'].'</div>';
+										unset($_SESSION['e_comment']);
+									}
+								?>
 								
 								<div class="row mx-auto">
 									<button id="anuluj" type="submit" class="col-2 mx-auto">Anuluj</button>
@@ -226,10 +377,6 @@
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
 	
 	<script src="bootstrap/js/bootstrap.min.js"></script>
-		
-		<script>
-			setCurrentDate();
-		</script>
 		
 </body>
 </html>
