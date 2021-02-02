@@ -1,3 +1,26 @@
+<?php
+
+	session_start();
+	
+	if (!isset($_SESSION['logged'])) {
+		header('Location: index.php');
+		exit();
+	}
+
+	if(!isset($_SESSION['secondPeriod'])) {	
+		require_once "currentMonth.php";
+	}
+	unset($_SESSION['secondPeriod']);
+	
+	//get values
+	$incomes = $_SESSION['incomes'];
+	$expenses = $_SESSION['expenses'];
+	$incomesDetails = $_SESSION['incomesDetails'];
+	$expensesDetails = $_SESSION['expensesDetails'];
+	$heading = $_SESSION['heading'];
+	
+?>
+
 <!DOCTYPE HTML>
 <html lang="pl"> 
 <head>
@@ -61,7 +84,7 @@
 				</li>
 				
 				<li class="nav-item">
-					<a class="nav-link" href="index.php"><i class="icon-logout"> Wyloguj (Użytkownik) </i></a>
+					<a class="nav-link" href="logout.php"><i class="icon-logout"> Wyloguj (<?= $_SESSION['username']; ?>) </i></a>
 				</li>
 				
 			</ul>
@@ -73,9 +96,9 @@
 				
 				<div class="dropdown-content dropdown-menu m-0" aria-labelledby="submenu">
 				
-					<a class="dropdown-item" href="#"> Bieżący miesiąc </a>
-					<a class="dropdown-item" href="#"> Poprzedni miesiąc </a>
-					<a class="dropdown-item" href="#"> Bieżący rok </a>
+					<a class="dropdown-item" href="balance.php"> Bieżący miesiąc </a>
+					<a class="dropdown-item" href="previousMonth.php"> Poprzedni miesiąc </a>
+					<a class="dropdown-item" href="currentYear.php"> Bieżący rok </a>
 					
 					<div class="dropdown-divider"></div>
 					
@@ -91,43 +114,33 @@
 			<div class="container">
 				<div class="row">
 					<div class="mx-auto text-center mb-4">
-						<h2 class="font-weight-bold mt-4">Przeglądaj bilans (miesiąc bieżący)</h2>
+						<h2 class="font-weight-bold mt-4"><?= $heading; ?></h2>
 					</div>	
 					<div class="container">
 					
 						<div class="row">
 							<div class="col-md-6">
 								<table class="table table-sm table-striped table-primary text-center">
-								  <thead>
-									<tr>
-										<th scope="col" colspan="3">Przychody</th>
-									</tr>
-									<tr>
-									  <th scope="col">Lp</th>
-									  <th scope="col">Kategoria</th>
-									  <th scope="col">Kwota [zł]</th>
-									</tr>
-								  </thead>
-								  <tbody>
-									<tr>
-									  <th scope="row">1</th>
-									  <td>Wynagrodzenie</td>
-									  <td>5252</td>
-									</tr>
-									<tr>
-									  <th scope="row">2</th>
-									  <td>Sprzedaż na allegro</td>
-									  <td>249.99</td>
-									</tr>
-									<tr>
-									  <th scope="row">3</th>
-									  <td>Odsetki bankowe</td>
-									  <td>30.11</td>
-									</tr>
-									<tr>
-									  <th scope="col" colspan="2">Suma:</th>
-									  <td>5532.10</td>
-									</tr>
+								  
+									<?php
+									if ($incomes == NULL) {
+										echo '<thead><tr><th scope="col" colspan="3">Przychody</th></tr>';
+										echo '<tr><td>Brak przychodów w bieżącym miesiącu</td></tr></thead>';
+									} else {
+										echo'<thead><tr><th scope="col" colspan="3">Przychody</th></tr>';
+										echo '<tr><th scope="col">Lp</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th></tr></thead>';
+										echo '<tbody>';
+										$totalIncome = 0;
+										$olNumber = 0;
+										foreach ($incomes as $income) {
+											echo '<tr><th scope="row">'.(++$olNumber).'</th>';
+											echo '<td>'.$income[0].'</td><td>'.$income[1].'</td></tr>';
+											$totalIncome += $income[1];
+										}
+										echo '<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">'.$totalIncome.'</td></tr>';
+										echo '</tbody>';
+									}
+									?>
 								  </tbody>
 								</table>
 							</div>
@@ -211,7 +224,7 @@
 							</button>
 						</div>
 						
-						<form class="text-center">
+						<form class="text-center" action="customPeriod.php" method="post">
 							<div class="modal-body">
 								
 								<div class="row mx-auto mt-4">
@@ -253,7 +266,7 @@
 	</main>
 	
 	<footer class="container-fluid p-3 mt-4 text-center text-white">
-		Wszelkie prawa zastrzeżone &copy; 2020  Dziękuję za wizytę!
+		Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
 	</footer>
 	
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
