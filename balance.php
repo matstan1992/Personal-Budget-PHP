@@ -121,7 +121,6 @@
 						<div class="row">
 							<div class="col-md-6">
 								<table class="table table-sm table-striped table-primary text-center">
-								  
 									<?php
 									if ($incomes == NULL) {
 										echo '<thead><tr><th scope="col" colspan="3">Przychody</th></tr>';
@@ -137,7 +136,7 @@
 											echo '<td>'.$income[0].'</td><td>'.$income[1].'</td></tr>';
 											$totalIncome += $income[1];
 										}
-										echo '<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">'.$totalIncome.'</td></tr>';
+										echo '<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">'.number_format($totalIncome, 2).'</td></tr>';
 										echo '</tbody>';
 									}
 									?>
@@ -147,42 +146,25 @@
 								
 							<div class=" col-md-6">
 								<table class="table table-sm table-striped table-secondary text-center">
-								  <thead>
-									<tr>
-										<th scope="col" colspan="3">Wydatki</th>
-									</tr>
-									<tr>
-									  <th scope="col">Lp</th>
-									  <th scope="col">Kategoria</th>
-									  <th scope="col">Kwota [zł]</th>
-									</tr>
-								  </thead>
-								  <tbody>
-									<tr>
-									  <th scope="row">1</th>
-									  <td>Jedzenie</td>
-									  <td>1200</td>
-									</tr>
-									<tr>
-									  <th scope="row">2</th>
-									  <td>Mieszkanie</td>
-									  <td>521.94</td>
-									</tr>
-									<tr>
-									  <th scope="row">3</th>
-									  <td>Transport</td>
-									  <td>194.06</td>
-									</tr>
-									<tr>
-									  <th scope="row">4</th>
-									  <td>Rozrywka</td>
-									  <td>21.23</td>
-									</tr>
-									<tr>
-									  <th scope="col" colspan="2">Suma:</th>
-									  <td>1937.23</td>
-									</tr>
-								  </tbody>
+								  <?php
+									if ($expenses == NULL) {
+										echo '<thead><tr><th scope="col" colspan="3">Wydatki</th></tr>';
+										echo '<tr><td>Brak wydatków w bieżącym miesiącu</td></tr></thead>';
+									} else {
+										echo'<thead><tr><th scope="col" colspan="3">Wydatki</th></tr>';
+										echo '<tr><th scope="col">Lp</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th></tr></thead>';
+										echo '<tbody>';
+										$totalExpense = 0;
+										$olNumber = 0;
+										foreach ($expenses as $expense) {
+											echo '<tr><th scope="row">'.(++$olNumber).'</th>';
+											echo '<td>'.$expense[0].'</td><td>'.$expense[1].'</td></tr>';
+											$totalExpense += $expense[1];
+										}
+										echo '<tr><th scope="col" colspan="2">Suma:</th><td class="font-weight-bold">'.number_format($totalExpense, 2).'</td></tr>';
+										echo '</tbody>';
+									}
+									?>
 								</table>
 							</div>
 						</div>
