@@ -38,7 +38,7 @@
 	<link rel="stylesheet" href="fontello/css/fontello.css" type="text/css" />
 	<link rel="stylesheet" href="style.css" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-	<script src="https://www.gstatic.com/charts/loader.js"></script>
+	<script type="text/javascript" src="https://www.gstatic.com/charts/loader.js"></script>
 	<script src="jquery-3.5.1.min.js"></script>
 	<script src="personalBudget.js"></script>
 	
@@ -120,7 +120,7 @@
 					
 						<div class="row">
 							<div class="col-md-6">
-								<table class="table table-sm table-striped table-primary text-center">
+								<table class="table table-sm table-striped table-info text-center">
 									<?php
 									if ($incomes == NULL) {
 										echo '<thead><tr><th scope="col" colspan="3">Przychody</th></tr>';
@@ -171,22 +171,117 @@
 								
 						<div class="row ">
 							<div class="col-md-8 offset-md-2">
-								<table class="table table-sm table-striped table-info text-center">
-									<tbody>
-										<tr>
-											<th>Bilans [zł]:</th>
-											<th>3594.87</th>
-										</tr>
-										<tr>
-											<th colspan="2">Gratulacje. Świetnie zarządzasz finansami!</th>
-										</tr>
-									</tbody>
+							<?php
+							if (($incomes == NULL) && ($expenses == NULL)) {
+								echo NULL;
+							} else {
+								$balance = number_format($totalIncome - $totalExpense, 2);
+
+								if ($balance > 0) {
+									echo '<table class="table table-sm table-striped table-success text-center">';
+									echo '<tbody><tr><th>Bilans [zł]:</th><th>'.$balance.'</th></tr>';
+									echo '<tr><th colspan="2">Gratulacje. Świetnie zarządzasz finansami!</th></tr></tbody>';
+									echo '</table>';
+								} else if ($balance < 0) {
+									echo '<table class="table table-sm table-striped table-danger text-center">';
+									echo '<tbody><tr><th>Bilans [zł]:</th><th>'.$balance.'</th></tr>';
+									echo '<tr><th colspan="2">Uważaj wpadasz w długi!</th></tr></tbody>';
+									echo '</table>';
+								} else if ($balance == 0) {
+									echo '<table class="table table-sm table-striped table-warning text-center">';
+									echo '<tbody><tr><th>Bilans [zł]:</th><th>'.$balance.'</th></tr>';
+									echo '<tr><th colspan="2">Twoje przychody i wydatki się równoważą!</th></tr></tbody>';
+									echo '</table>';
+								}
+							}	
+							?>	
+							</div>
+						</div>
+						
+						<div class="row">
+							<div class="col-sm-12">
+								<table class="col-sm-12 table-sm table-striped table-info text-center">
+									<?php
+									if ($incomes == NULL) {
+										echo '<thead><tr><th scope="col" colspan="5">Szczegółowe zestawienie przychodów</th></tr>';
+										echo '<tr><td>Brak przychodów w bieżącym miesiącu</td></tr></thead>';
+									} else {
+										echo'<thead><tr><th scope="col" colspan="5">Szczegółowe zestawienie przychodów</th></tr>';
+										echo '<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th></tr></thead>';
+										echo '<tbody>';
+										$olNumber = 0;
+										foreach ($incomesDetails as $detail) {
+											echo '<tr><th scope="row">'.(++$olNumber).'</th>';
+											echo '<td>'.$detail[0].'</td><td>'.$detail[1].'</td><td>'.$detail[2].'</td><td>'.$detail[3].'</td></tr></tbody>';
+										};
+									}
+									?>
+								  </tbody>
+								</table>
+							</div>
+								
+							<div class=" mt-5 col-sm-12">
+								<table class="col-sm-12 table-sm table-striped table-secondary text-center">
+								  <?php
+									if ($expenses == NULL) {
+										echo '<thead><tr><th scope="col" colspan="6">Szczegółowe zestawienie wydatków</th></tr>';
+										echo '<tr><td>Brak wydatków w bieżącym miesiącu</td></tr></thead>';
+									} else {
+										echo'<thead><tr><th scope="col" colspan="6">Szczegółowe zestawienie wydatków</th></tr>';
+										echo '<tr><th scope="col">Lp</th><th scope="col">Data</th><th scope="col">Kategoria</th><th scope="col">Sposób płatności</th><th scope="col">Kwota [zł]</th><th scope="col">Komentarz</th></tr></thead>';
+										echo '<tbody>';
+										$olNumber = 0;
+										foreach ($expensesDetails as $detail) {
+											echo '<tr><th scope="row">'.(++$olNumber).'</th>';
+											echo '<td>'.$detail[0].'</td><td>'.$detail[1].'</td><td>'.$detail[2].'</td><td>'.$detail[3].'</td><td>'.$detail[4].'</td></tr></tbody>';
+										}
+									}
+									?>
 								</table>
 							</div>
 						</div>
 						
 						<div class="row">
-							<div id="pieChart" class="mx-auto"></div>
+						<script>
+							google.charts.load("current", {packages:["corechart"]});
+							google.charts.setOnLoadCallback(drawChart);
+
+							function drawChart() 
+							{
+								var data = google.visualization.arrayToDataTable 
+								([
+									['Kategoria', 'Kwota'],
+									<?php
+									foreach($expenses as $expense) {
+										echo "['".$expense[0]."', ".$expense[1]."],";
+									}
+									?>
+								]);
+
+								var options = 
+								{
+									title: 'Wydatki',
+									backgroundColor: 'none',
+									titleFontSize: 20,
+									legend: 'none',
+									width: '100%',
+									height: 500,
+									margin: 0,
+									padding: 0,
+									is3D: true,
+								};
+
+								var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+								chart.draw(data, options);
+							}
+						</script>
+						<?php 
+							if ($expenses == NULL) {
+								echo NULL;
+							} else {
+								echo '<div id="pieChart" class="mx-auto"></div>';
+							} 
+						?>
 						</div>
 						
 					</div>
