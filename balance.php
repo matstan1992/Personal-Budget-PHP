@@ -172,12 +172,20 @@
 						<div class="row ">
 							<div class="col-md-8 offset-md-2">
 							<?php
-							if (($incomes == NULL) && ($expenses == NULL)) {
-								echo NULL;
-							} else {
-								$balance = number_format($totalIncome - $totalExpense, 2);
-
-								if ($balance > 0) {
+								if (($incomes == NULL) && ($expenses == NULL)) {
+									$balance = NULL;
+								} else if (($incomes > NUll) && ($expenses == NULL)) {
+									$balance = number_format($totalIncome - 0, 2);
+								} else if (($incomes == NUll) && ($expenses > NULL)) {
+									 $balance = number_format(0 - $totalExpense, 2);							
+								} else {
+									$balance = number_format($totalIncome - $totalExpense, 2);
+								}
+									
+								if ($balance == NULL) {
+									echo NULL;
+								}
+								else if ($balance > 0) {
 									echo '<table class="table table-sm table-striped table-success text-center">';
 									echo '<tbody><tr><th>Bilans [zł]:</th><th>'.$balance.'</th></tr>';
 									echo '<tr><th colspan="2">Gratulacje. Świetnie zarządzasz finansami!</th></tr></tbody>';
@@ -192,9 +200,8 @@
 									echo '<tbody><tr><th>Bilans [zł]:</th><th>'.$balance.'</th></tr>';
 									echo '<tr><th colspan="2">Twoje przychody i wydatki się równoważą!</th></tr></tbody>';
 									echo '</table>';
-								}
-							}	
-							?>	
+								}	
+								?>	
 							</div>
 						</div>
 						
