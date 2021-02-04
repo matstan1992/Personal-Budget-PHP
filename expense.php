@@ -33,16 +33,16 @@
 		//date
 		$expenseDate = $_POST['date'];
 		
-		$currentDate = date('Y-m-d');
+		$theLastDayOfTheCurrentMonth = date('Y-m-t');
 		
-		if ($expenseDate > $currentDate) {
+		if ($expenseDate > $theLastDayOfTheCurrentMonth) {
 			$allGood = false;
-			$_SESSION['e_expenseDate'] = "Data musi być dzisiejsza lub wcześniejsza (max 01-01-2000)";	
+			$_SESSION['e_expenseDate'] = "Maksymalna data do wyboru to ostatni dzień bieżącego miesiąca";	
 		}
 		
 		if ($expenseDate < '2000-01-01') {
 			$allGood = false;
-			$_SESSION['e_expenseDate'] = "Data nie może być wcześniejsza niż 01-01-2000";	
+			$_SESSION['e_expenseDate'] = "Minimalna data do wyboru to 01-01-2000";	
 		}
 		
 		//category

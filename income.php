@@ -33,16 +33,16 @@
 		//date
 		$incomeDate = $_POST['date'];
 		
-		$currentDate = date('Y-m-d');
+		$theLastDayOfTheCurrentMonth = date('Y-m-t');
 		
-		if ($incomeDate > $currentDate) {
+		if ($incomeDate > $theLastDayOfTheCurrentMonth) {
 			$allGood = false;
-			$_SESSION['e_incomeDate'] = "Data musi być dzisiejsza lub wcześniejsza (max 01-01-2000)";	
+			$_SESSION['e_incomeDate'] = "Maksymalna data do wyboru to ostatni dzień bieżącego miesiąca";	
 		}
 		
 		if ($incomeDate < '2000-01-01') {
 			$allGood = false;
-			$_SESSION['e_incomeDate'] = "Data nie może być wcześniejsza niż 01-01-2000";	
+			$_SESSION['e_incomeDate'] = "Minimalna data do wyboru to 01-01-2000";	
 		}
 		
 		//category
