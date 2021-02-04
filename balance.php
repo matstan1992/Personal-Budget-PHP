@@ -18,7 +18,7 @@
 	$incomesDetails = $_SESSION['incomesDetails'];
 	$expensesDetails = $_SESSION['expensesDetails'];
 	$heading = $_SESSION['heading'];
-	
+
 ?>
 
 <!DOCTYPE HTML>
@@ -114,6 +114,19 @@
 			<div class="container">
 				<div class="row">
 					<div class="mx-auto text-center mb-4">
+					<?php 	
+							if (isset($_SESSION['e_dateStart'])) {		
+								echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_dateStart'].'</div>';
+								unset($_SESSION['e_dateStart']);
+							}
+						?>
+						<?php 	
+							if (isset($_SESSION['e_dateEnd'])) {		
+								echo '<div class="row justify-content-center text-danger">'.$_SESSION['e_dateEnd'].'</div>';
+								unset($_SESSION['e_dateEnd']);
+							}
+						?>
+						
 						<h2 class="font-weight-bold mt-4"><?= $heading; ?></h2>
 					</div>	
 					<div class="container">
@@ -249,42 +262,9 @@
 						</div>
 						
 						<div class="row">
-						<script>
-							google.charts.load("current", {packages:["corechart"]});
-							google.charts.setOnLoadCallback(drawChart);
-
-							function drawChart() 
-							{
-								var data = google.visualization.arrayToDataTable 
-								([
-									['Kategoria', 'Kwota'],
-									<?php
-									foreach($expenses as $expense) {
-										echo "['".$expense[0]."', ".$expense[1]."],";
-									}
-									?>
-								]);
-
-								var options = 
-								{
-									title: 'Wydatki',
-									backgroundColor: 'none',
-									titleFontSize: 20,
-									legend: 'none',
-									width: '100%',
-									height: 500,
-									margin: 0,
-									padding: 0,
-									is3D: true,
-								};
-
-								var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
-								chart.draw(data, options);
-							}
-						</script>
 						<?php 
-							if ($expenses == NULL) {
-								echo NULL;
+							if (($expenses == NULL) || ($totalExpense == 0)) {
+								NULL;
 							} else {
 								echo '<div id="pieChart" class="mx-auto"></div>';
 							} 
@@ -318,7 +298,7 @@
 											<span class="input-group-text"><i class="icon-calendar"></i></span>
 										</div>
 										<label class="sr-only">Data</label>
-										<input type="date" id="date1" name="date" aria-label="Data" required>
+										<input type="date" id="date1" name="date1" aria-label="Data" required>
 									</div>
 								</div>
 								
@@ -329,10 +309,10 @@
 											<span class="input-group-text"><i class="icon-calendar"></i></span>
 										</div>
 										<label class="sr-only">Data</label>
-										<input type="date" id="date" name="date" aria-label="Data" required>
+										<input type="date" id="date" name="date2" aria-label="Data" required>
 									</div>
 								</div>
-						
+								
 							</div>
 							
 							<div class="modal-footer">
@@ -341,7 +321,6 @@
 							</div>
 						
 						</form>
-				
 					</div>
 				</div>
 			</div>
@@ -353,6 +332,40 @@
 		Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
 	</footer>
 	
+	<script>
+		google.charts.load("current", {packages:["corechart"]});
+		google.charts.setOnLoadCallback(drawChart);
+
+		function drawChart() 
+		{
+			var data = google.visualization.arrayToDataTable 
+			([
+				['Kategoria', 'Kwota'],
+				<?php
+				foreach($expenses as $expense) {
+					echo "['".$expense[0]."', ".$expense[1]."],";
+				}
+				?>
+			]);
+
+			var options = 
+			{
+				title: 'Wydatki',
+				backgroundColor: 'none',
+				titleFontSize: 20,
+				legend: 'none',
+				width: '100%',
+				height: 500,
+				margin: 0,
+				padding: 0,
+				is3D: true,
+			};
+
+			var chart = new google.visualization.PieChart(document.getElementById('pieChart'));
+			chart.draw(data, options);
+		}
+	</script>
+	
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>
 
 	<script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js" integrity="sha384-9/reFTGAW83EW2RDu2S0VKaIzap3H66lZH81PoYlFhbGU+6BZp6G7niu735Sk7lN" crossorigin="anonymous"></script>
@@ -361,7 +374,7 @@
 	
 	<script>
 		setCurrentDate();
-		drawChart();
+		//drawChart();
 	</script>
 </body>
 </html>
