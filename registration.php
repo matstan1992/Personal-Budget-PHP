@@ -52,17 +52,6 @@
 		//password hash
 		$passwordHash = password_hash($password1, PASSWORD_DEFAULT);
 
-		//reCAPTCHA
-		$secretKey = "6LdMmyoaAAAAAGBm3gI0UkqLUfwCsxPvnxuDXNQg";
-		
-		$check = file_get_contents('https://www.google.com/recaptcha/api/siteverify?secret='.$secretKey.'&response='.$_POST['g-recaptcha-response']);
-		
-		$answer = json_decode($check);
-		
-		if ($answer->success == false) {
-			$allGood = false;
-			$_SESSION['e_captcha'] = "Potwierdź, że nie jesteś botem!";
-		}
 		
 		//remember the entered data
 		$_SESSION['fr_username'] = $username;
@@ -145,9 +134,7 @@
 	<link rel="stylesheet" href="fontello/css/fontello.css" type="text/css" />
 	<link rel="stylesheet" href="style.css" type="text/css"/>
 	<link href="https://fonts.googleapis.com/css2?family=Lato:wght@400;700&display=swap" rel="stylesheet">
-	
-	<script src="https://www.google.com/recaptcha/api.js" async defer></script>
-	
+		
 </head>
 
 <body>
@@ -248,14 +235,6 @@
 											}?>" name="password2">
 								</div>
 							</div>
-							
-							<div class="g-recaptcha" data-sitekey="6LdMmyoaAAAAAJisDwXWE7S4aa3MtQW87mcor05d"></div>
-							<?php 	
-									if (isset($_SESSION['e_captcha'])) {
-										echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_captcha'].'</div>';
-										unset($_SESSION['e_captcha']);
-									}
-								?>
 							
 							<div class="row">
 								<button type="submit" class="col-12">Zarejestruj</button>
