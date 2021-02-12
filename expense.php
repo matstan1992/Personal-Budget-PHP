@@ -89,6 +89,7 @@
 			
 			try {
 				$connection = new mysqli($host, $db_user, $db_password, $db_name);
+				$connection->query("SET NAMES 'utf8'");
 				
 				if ($connection->connect_errno != 0) {
 					throw new Exception(mysqli_connect_errno());
@@ -245,6 +246,7 @@
 			
 											try {
 												$connection = new mysqli($host, $db_user, $db_password, $db_name);
+												$connection->query("SET NAMES 'utf8'");
 				
 												if ($connection->connect_errno != 0) {
 													throw new Exception(mysqli_connect_errno());
@@ -258,7 +260,7 @@
 				
 													if ($howManyNames > 0) {
 														while ($row = $resultOfQuery->fetch_assoc()) {
-															echo '<div class="d-inline-block mr-3">';
+															echo '<div class="d-block mb-1">';
 															echo '<label>';
 															echo '<input type="radio" name="paymentMethod" value="'.$row['name'];
 															
@@ -289,7 +291,7 @@
 									}
 								?>
 								
-								<fieldset class="mx-auto mt-4">
+								<fieldset class="mx-auto mt-3">
 									
 									<legend class="font-weight-bold mb-3">Kategoria:</legend>
 									<?php
@@ -298,6 +300,7 @@
 		
 										try {
 											$connection = new mysqli($host, $db_user, $db_password, $db_name);
+											$connection->query("SET NAMES 'utf8'");
 			
 											if ($connection->connect_errno != 0) {
 												throw new Exception(mysqli_connect_errno());
@@ -357,8 +360,8 @@
 								?>
 								
 								<div class="row mx-auto">
-									<button id="anuluj" type="submit" class="col-2 mx-auto">Anuluj</button>
-									<button type="submit" class="col-2 mx-auto">Dodaj</button>
+									<button id="anuluj" type="submit" class="col-3 mx-auto">Anuluj</button>
+									<button type="submit" class="col-3 mx-auto">Dodaj</button>
 								</div>
 							</form>
 						</div>
@@ -369,7 +372,7 @@
 		</main>
 		
 		<footer class="container-fluid p-3 mt-4 text-center text-white">
-			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
+			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?>
 		</footer>
 		
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

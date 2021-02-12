@@ -65,6 +65,7 @@
 		
 		try {
 			$connection = new mysqli($host, $db_user, $db_password, $db_name);
+			$connection->query("SET NAMES 'utf8'");
 			
 			if ($connection->connect_errno != 0) {
 				throw new Exception(mysqli_connect_errno());
@@ -159,9 +160,9 @@
 					
 					<section class="row content col-sm-10 offset-sm-1 col-md-8 offset-md-2 col-lg-6 offset-lg-0 col-xl-5 offset-xl-1 bg-white my-auto mx-auto">
 					
-						<div class="mx-auto mt-4 mb-3">			
-								<div class="selected mr-2"><h3 class="h5 font-weight-bold">Rejestracja</h3>(Nie mam konta)</div>
-								<a href="index.php"><div class="noselected"><h3 class="h5 font-weight-bold">Logowanie</h3>(Mam konto)</div></a>	
+						<div class="mx-auto mt-4 mb-2">			
+								<div class="selected mr-2" style="width: 140px;"><h3 class="h5 font-weight-bold">Rejestracja</h3></div>
+								<a href="index.php"><div class="noselected" style="width: 140px;"><h3 class="h5 font-weight-bold">Logowanie</h3></div></a>	
 						</div>
 						
 						<form class="mx-auto mb-4" method="post">
@@ -248,7 +249,7 @@
 		</main>
 		
 		<footer class="container-fluid p-3 mt-4 text-center text-white">
-			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
+			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?>
 		</footer>
 	
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

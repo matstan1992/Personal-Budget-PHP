@@ -118,14 +118,14 @@
 						unset ($_SESSION['saveIncome']);
 					} 
 				?>
-				<img class="imagemenu" src="img/imgmenu.jpg" alt="">
+				<img class="imagemenu" style="width: 335px; height: 335px;" src="img/imgmenu.jpg" alt="">
 				<h3 class="mt-3">Zaczynajmy!</h3>
 			</div>
 		
 		</main>
 		
 		<footer class="container-fluid p-3 mt-4 text-center text-white">
-			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
+			Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?>
 		</footer>
 		
 	<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js" integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj" crossorigin="anonymous"></script>

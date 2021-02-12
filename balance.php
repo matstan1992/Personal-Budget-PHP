@@ -116,13 +116,13 @@
 					<div class="mx-auto text-center mb-4">
 					<?php 	
 							if (isset($_SESSION['e_dateStart'])) {		
-								echo '<div class="row mb-2 justify-content-center text-danger">'.$_SESSION['e_dateStart'].'</div>';
+								echo '<div class="mb-2 justify-content-center text-danger">'.$_SESSION['e_dateStart'].'</div>';
 								unset($_SESSION['e_dateStart']);
 							}
 						?>
 						<?php 	
 							if (isset($_SESSION['e_dateEnd'])) {		
-								echo '<div class="row justify-content-center text-danger">'.$_SESSION['e_dateEnd'].'</div>';
+								echo '<div class="justify-content-center text-danger">'.$_SESSION['e_dateEnd'].'</div>';
 								unset($_SESSION['e_dateEnd']);
 							}
 						?>
@@ -157,7 +157,7 @@
 								</table>
 							</div>
 								
-							<div class=" col-md-6">
+							<div class="col-md-6">
 								<table class="table table-sm table-striped table-secondary text-center">
 								  <?php
 									if ($expenses == NULL) {
@@ -219,8 +219,8 @@
 						</div>
 						
 						<div class="row">
-							<div class="col-sm-12">
-								<table class="col-sm-12 table-sm table-striped table-info text-center">
+							<div class="col-12">
+								<table class="table table-sm table-striped table-info text-center">
 									<?php
 									if ($incomes == NULL) {
 										echo '<thead><tr><th scope="col" colspan="5">Szczegółowe zestawienie przychodów</th></tr>';
@@ -239,9 +239,10 @@
 								  </tbody>
 								</table>
 							</div>
-								
-							<div class=" mt-5 col-sm-12">
-								<table class="col-sm-12 table-sm table-striped table-secondary text-center">
+						</div>
+						<div class="row">
+							<div class="col-12">
+								<table class="table table-sm table-striped table-secondary text-center">
 								  <?php
 									if ($expenses == NULL) {
 										echo '<thead><tr><th scope="col" colspan="6">Szczegółowe zestawienie wydatków</th></tr>';
@@ -291,31 +292,29 @@
 						<form class="text-center" action="customPeriod.php" method="post">
 							<div class="modal-body">
 								
-								<div class="row mx-auto mt-4">
+								<div class="col mx-auto">
 									<div class="form-group form-inline mx-auto">
 										<span class="text-dark mr-3 font-weight-bold">Od:</span>
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="icon-calendar"></i></span>
 										</div>
 										<label class="sr-only">Data</label>
-										<input type="date" id="date1" name="date1" aria-label="Data" required>
+										<input type="date" id="date1" name="date1" class="form-control col-sm-8" aria-label="Data" required>
 									</div>
-								</div>
-								
-								<div class="row mx-auto mt-4">
+							
 									<div class="form-group form-inline mx-auto">
 										<span class="text-dark mr-3 font-weight-bold">Do:</span>
 										<div class="input-group-prepend">
 											<span class="input-group-text"><i class="icon-calendar"></i></span>
 										</div>
 										<label class="sr-only">Data</label>
-										<input type="date" id="date" name="date2" aria-label="Data" required>
+										<input type="date" id="date" name="date2" class="form-control col-sm-8" aria-label="Data" required>
 									</div>
 								</div>
 								
 							</div>
 							
-							<div class="modal-footer">
+							<div class="modal-footer justify-content-center">
 								<button id="anulujModal" type="submit" class="btn btn-reset" data-dismiss="modal">Anuluj</button>
 								<button id="zatwierdz" type="submit" class="btn">Zatwierdź</button>
 							</div>
@@ -329,7 +328,7 @@
 	</main>
 	
 	<footer class="container-fluid p-3 mt-4 text-center text-white">
-		Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?> Dziękuję za wizytę!
+		Wszelkie prawa zastrzeżone &copy; 2020-<?php echo date("Y");?>
 	</footer>
 	
 	<script>
